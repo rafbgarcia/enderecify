@@ -1,11 +1,12 @@
 defmodule StatesApi.Repo.Correios do
-  alias StatesApi.{Repo, Regiao, Estado, Bairro, Localidade}
+  alias StatesApi.{Repo, Regiao, Estado, Bairro, Localidade, CPC}
 
   def insert_data do
     insert_regioes()
     insert_estados()
     insert_localidades()
     insert_bairros()
+    insert_cpcs()
   end
 
   defp insert_regioes do
@@ -61,6 +62,23 @@ defmodule StatesApi.Repo.Correios do
     end)
 
     bulk_insert(Bairro, records)
+  end
+
+  defp insert_cpcs do
+    records = map_file("LOG_CPC.TXT", fn(line) ->
+      [id, sigla_estado, localidade_id, nome, endereco, cep] = line
+
+      CPC.new(%{
+        id: id,
+        sigla_estado: sigla_estado,
+        localidade_id: localidade_id,
+        nome: to_utf8(nome),
+        endereco: to_utf8(endereco),
+        cep: cep,
+      }).changes
+    end)
+
+    bulk_insert(CPC, records)
   end
 
   defp bulk_insert(schema, records) do

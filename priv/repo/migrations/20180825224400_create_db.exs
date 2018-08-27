@@ -36,5 +36,13 @@ defmodule StatesApi.Repo.Migrations.CreateDb do
       add :nome, :string
       add :abbr, :string
     end
+
+    create table(:cpcs) do
+      add :localidade_id, references(:localidades, on_delete: :delete_all)
+      add :sigla_estado, references(:estados, column: :sigla, type: :string, on_delete: :delete_all)
+      add :nome, :string
+      add :endereco, :string
+      add :cep, :string
+    end
   end
 end
