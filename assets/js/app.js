@@ -17,3 +17,18 @@ import "phoenix_html"
 // paths "./socket" or full ones "web/static/js/socket".
 
 // import socket from "./socket"
+
+$('button').click(function () {
+  const query = $('textarea').val()
+
+  fetch('/api', {
+    method: 'POST',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({query})
+  })
+  .then((resp) => resp.json())
+  .then((data) => $('#result').html(JSON.stringify(data)))
+})

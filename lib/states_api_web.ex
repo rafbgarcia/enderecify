@@ -63,11 +63,21 @@ defmodule StatesApiWeb do
     quote do
       use Ecto.Schema
       import Ecto.Changeset
+    end
+  end
 
-      # @timestamps_opts [
-      #   type: Timex.Ecto.DateTime,
-      #   autogenerate: {Timex.Ecto.DateTime, :autogenerate, []}
-      # ]
+  def graphql_resolver do
+    quote do
+      alias StatesApi.Repo
+      import Ecto.Query, warn: false
+      import Ecto
+    end
+  end
+
+  def graphql_schema do
+    quote do
+      use Absinthe.Schema.Notation
+      use Absinthe.Ecto, repo: StatesApi.Repo
     end
   end
 

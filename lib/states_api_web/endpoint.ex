@@ -25,7 +25,7 @@ defmodule StatesApiWeb.Endpoint do
   plug Plug.Logger
 
   plug Plug.Parsers,
-    parsers: [:urlencoded, :multipart, :json],
+    parsers: [:urlencoded, :multipart, :json, Absinthe.Plug.Parser],
     pass: ["*/*"],
     json_decoder: Phoenix.json_library()
 
@@ -39,6 +39,13 @@ defmodule StatesApiWeb.Endpoint do
     store: :cookie,
     key: "_states_api_key",
     signing_salt: "AaY4aObD"
+
+  plug(
+    CORSPlug,
+    headers: ["*"],
+    methods: ["POST"]
+    # origin: ["http://localhost:8100", "192.1.1.15"],
+  )
 
   plug StatesApiWeb.Router
 end

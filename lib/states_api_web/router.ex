@@ -14,13 +14,14 @@ defmodule StatesApiWeb.Router do
   end
 
   scope "/", StatesApiWeb do
-    pipe_through :browser # Use the default browser stack
+    pipe_through :browser
 
     get "/", PageController, :index
   end
 
-  # Other scopes may use custom stacks.
-  # scope "/api", StatesApiWeb do
-  #   pipe_through :api
-  # end
+  scope "/api" do
+    pipe_through :api
+
+    post("/", Absinthe.Plug.GraphiQL, schema: StatesApiWeb.Graphql.Schema, json_codec: Phoenix.json_library())
+  end
 end
