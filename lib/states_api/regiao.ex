@@ -7,8 +7,8 @@ defmodule StatesApi.Regiao do
   end
 
   @doc false
-  def changeset(regiao, attrs) do
-    regiao
+  def new(attrs) do
+    %StatesApi.Regiao{}
     |> cast(attrs, [:sigla, :nome])
   end
 end

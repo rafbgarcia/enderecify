@@ -16,23 +16,23 @@ defmodule StatesApi.Repo.Migrations.CreateDb do
     create unique_index(:estados, [:sigla])
 
     create table(:cidades) do
-      add :estado, references(:estados, column: :sigla, type: :string, on_delete: :delete_all)
+      add :sigla_estado, references(:estados, column: :sigla, type: :string, on_delete: :delete_all)
       add :nome, :string
     end
 
     create table(:localidades) do
-      add :uf, :string
+      add :sigla_estado, references(:estados, column: :sigla, type: :string, on_delete: :delete_all)
       add :nome, :string
       add :cep, :string
       add :situacao, :string
       add :tipo, :string
       add :abbr, :string
-      add :ibge_municipio_id, :integer # https://servicodados.ibge.gov.br/api/v1/localidades/municipios/1200351
+      add :ibge_municipio_id, :string # https://servicodados.ibge.gov.br/api/v1/localidades/municipios/1200351
     end
 
     create table(:bairros) do
       add :localidade_id, references(:localidades, on_delete: :delete_all)
-      add :uf, :string
+      add :sigla_estado, references(:estados, column: :sigla, type: :string, on_delete: :delete_all)
       add :nome, :string
       add :abbr, :string
     end
