@@ -3,7 +3,7 @@ defmodule StatesApi.Localidade do
   alias StatesApi.{Estado, Localidade}
 
   schema "localidades" do
-    belongs_to(:estado, Estado, foreign_key: :sigla_estado, type: :string)
+    belongs_to(:estado, Estado, foreign_key: :sigla_estado, references: :sigla, type: :string)
     field :nome, :string
     field :cep, :string
     field :situacao, :string
@@ -14,7 +14,7 @@ defmodule StatesApi.Localidade do
 
   @doc false
   def new(attrs) do
-    %StatesApi.Localidade{}
+    %Localidade{}
     |> cast(attrs, [
       :id, :sigla_estado, :nome, :cep, :situacao,
       :tipo, :abbr, :ibge_municipio_id

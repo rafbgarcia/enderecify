@@ -60,7 +60,7 @@ defmodule StatesApi.MixProject do
       "ecto.seed": ["run priv/repo/seeds.exs"],
       "ecto.setup": ["ecto.create", "ecto.migrate", "ecto.seed"],
       "ecto.reset": ["ecto.drop", "ecto.setup"],
-      "test": ["ecto.create --quiet", "ecto.migrate", "test"],
+      test: ["ecto.create --quiet", "ecto.migrate", "test"],
     ]
   end
 end

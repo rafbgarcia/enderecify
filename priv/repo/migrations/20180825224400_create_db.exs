@@ -2,13 +2,13 @@ defmodule StatesApi.Repo.Migrations.CreateDb do
   use Ecto.Migration
 
   def change do
-    create table(:regioes) do
+    create table(:regioes, primary_key: false) do
       add :sigla, :string, primary_key: true
       add :nome, :string
     end
     create unique_index(:regioes, [:sigla])
 
-    create table(:estados) do
+    create table(:estados, primary_key: false) do
       add :sigla, :string, primary_key: true
       add :sigla_regiao, references(:regioes, column: :sigla, type: :string, on_delete: :delete_all)
       add :nome, :string

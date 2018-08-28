@@ -22,6 +22,6 @@ defmodule StatesApiWeb.Router do
   scope "/api" do
     pipe_through :api
 
-    post("/", Absinthe.Plug.GraphiQL, schema: StatesApiWeb.Graphql.Schema, json_codec: Phoenix.json_library())
+    forward("/", Absinthe.Plug.GraphiQL, schema: StatesApiWeb.Graphql.Schema, json_codec: Phoenix.json_library())
   end
 end

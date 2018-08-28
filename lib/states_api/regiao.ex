@@ -1,8 +1,11 @@
 defmodule StatesApi.Regiao do
   use StatesApiWeb, :schema
+  alias StatesApi.{Estado}
+
+  @primary_key {:sigla, :string, []}
 
   schema "regioes" do
-    field :sigla, :string
+    has_many :estados, Estado, foreign_key: :sigla_regiao
     field :nome, :string
   end
 
