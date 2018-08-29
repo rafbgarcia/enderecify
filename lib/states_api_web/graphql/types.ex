@@ -4,4 +4,5 @@ defmodule StatesApiWeb.Graphql.Types do
   import_types(StatesApiWeb.Graphql.Type.Regiao)
   import_types(StatesApiWeb.Graphql.Type.Estado)
   import_types(StatesApiWeb.Graphql.Type.Localidade)
+  import_types(StatesApiWeb.Graphql.Type.Bairro)
 end

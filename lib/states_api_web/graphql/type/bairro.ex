@@ -3,5 +3,6 @@ defmodule StatesApiWeb.Graphql.Type.Bairro do
 
   object :bairro do
     field(:nome, :string)
+    field(:abbr, :string)
   end
 end

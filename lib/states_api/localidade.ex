@@ -1,8 +1,9 @@
 defmodule StatesApi.Localidade do
   use StatesApiWeb, :schema
-  alias StatesApi.{Estado, Localidade}
+  alias StatesApi.{Estado, Localidade, Bairro}
 
   schema "localidades" do
+    has_many(:bairros, Bairro)
     belongs_to(:estado, Estado, foreign_key: :sigla_estado, references: :sigla, type: :string)
     field :nome, :string
     field :cep, :string
