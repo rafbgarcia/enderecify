@@ -22,5 +22,10 @@ defmodule StatesApiWeb.Graphql.Schema do
       arg(:localidade_id, non_null(:id))
       resolve(&StatesApi.Resolve.Bairro.handle/2)
     end
+
+    field :logradouros, list_of(:logradouro) do
+      arg(:cep, :string)
+      resolve(&StatesApi.Resolve.Logradouro.handle/2)
+    end
   end
 end

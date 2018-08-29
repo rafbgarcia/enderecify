@@ -39,11 +39,11 @@ defmodule StatesApi.Repo.Correios do
         id: id,
         sigla_estado: sigla_estado,
         nome: to_utf8(nome),
-        cep: cep,
+        cep: sanitize_string(cep),
         situacao: situacao,
         tipo: tipo,
         abbr: to_utf8(abbr),
-        ibge_municipio_id: String.trim(ibge_municipio_id)
+        ibge_municipio_id: sanitize_string(ibge_municipio_id)
       }).changes
     end)
 
@@ -76,7 +76,7 @@ defmodule StatesApi.Repo.Correios do
         localidade_id: localidade_id,
         nome: to_utf8(nome),
         endereco: to_utf8(endereco),
-        cep: cep,
+        cep: sanitize_string(cep),
       }).changes
     end)
 
@@ -95,7 +95,7 @@ defmodule StatesApi.Repo.Correios do
           bairro_id: bairro_id,
           nome: to_utf8(nome),
           complemento: to_utf8(complemento),
-          cep: cep,
+          cep: sanitize_string(cep),
           tipo: to_utf8(tipo),
           utilizacao: utilizacao,
           abbr: to_utf8(abbr),
@@ -124,6 +124,12 @@ defmodule StatesApi.Repo.Correios do
 
   defp to_utf8(string) do
     :unicode.characters_to_binary(string, :latin1)
+    |> sanitize_string()
+  end
+
+  defp sanitize_string(string) do
+    string
+    |> String.trim()
   end
 
   defp ibge_states do
