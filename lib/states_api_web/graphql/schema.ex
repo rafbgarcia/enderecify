@@ -15,5 +15,10 @@ defmodule StatesApiWeb.Graphql.Schema do
       arg(:sigla_regiao, :string)
       resolve(&StatesApi.Resolve.Estado.handle/2)
     end
+
+    field :localidades, list_of(:localidade) do
+      arg(:id, :id)
+      resolve(&StatesApi.Resolve.Cidade.handle/2)
+    end
   end
 end
