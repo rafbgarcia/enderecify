@@ -78,6 +78,15 @@ defmodule StatesApiWeb do
     quote do
       use Absinthe.Schema.Notation
       use Absinthe.Ecto, repo: StatesApi.Repo
+      import Ecto.Query, warn: false
+    end
+  end
+
+  def iex do
+    quote do
+      import Ecto.Query, warn: false
+      import Ecto
+      alias StatesApi.{Repo, Regiao, Estado, Localidade, Bairro, Logradouro, CPC}
     end
   end
 

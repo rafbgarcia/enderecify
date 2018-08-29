@@ -5,11 +5,13 @@ defmodule StatesApiWeb.Graphql.Schema do
 
   query do
     field :regioes, list_of(:regiao) do
+      arg(:sigla, :string)
+      arg(:siglas, list_of(:string))
       resolve(&StatesApi.Resolve.Regiao.handle/2)
     end
 
     field :estados, list_of(:estado) do
-      arg(:sigla, :sigla)
+      arg(:sigla, :string)
       arg(:sigla_regiao, :string)
       resolve(&StatesApi.Resolve.Estado.handle/2)
     end

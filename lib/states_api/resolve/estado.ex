@@ -21,7 +21,7 @@ defmodule StatesApi.Resolve.Estado do
   end
 
   defp find(sigla) do
-    Estado.get!(sigla)
+    Estado |> Repo.get!(sigla)
   end
 
   defp with_region(sigla_regiao) do
