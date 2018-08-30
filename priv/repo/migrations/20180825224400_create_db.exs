@@ -81,14 +81,22 @@ defmodule StatesApi.Repo.Migrations.CreateDb do
     create table(:logradouros_search) do
       add :localidade_id, references(:localidades, on_delete: :delete_all), comment: "Usado para achar localidades de uma cidade"
       add :sigla_estado, references(:estados, column: :sigla, type: :string, on_delete: :delete_all), comment: "Usado para achar localidades de um estado"
-      add :endereco, :string, comment: "Agrega todo o endereço para facilitar a busca. Ex: 'rua nova aurora natal rn'"
+      add :endereco, :text, comment: "Agrega todo o endereço para facilitar a busca. Ex: 'rua nova aurora natal rn'"
+      add :readings, {:array, :text}, comment: "For PGroonga prefix search"
       add :table_name, :string, comment: "Tabela de referência do logradouro: `logradouro`, `grande_usuarios`, `unidades_operacionais`"
       add :record_id, :bigint, comment: "ID do registro na tabela de referência"
     end
 
-    create index(:logradouros_search, [:endereco],
-      name: :create_logradouros_search_pgroonga_address_index,
-      using: :pgroonga
-    )
+    execute """
+      CREATE INDEX pgroonga_logradouros_search_prefix_search
+      ON logradouros_search
+      USING pgroonga(endereco pgroonga_text_term_search_ops_v2, readings pgroonga_text_array_term_search_ops_v2);
+    """
+    execute """
+      CREATE INDEX pgroonga_logradouros_search_full_text_search
+      ON logradouros_search
+      USING pgroonga(endereco)
+      WITH (tokenizer = 'TokenBigramSplitSymbolAlphaDigit');
+    """
   end
 end

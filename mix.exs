@@ -57,8 +57,9 @@ defmodule StatesApi.MixProject do
   # See the documentation for `Mix` for more info on aliases.
   defp aliases do
     [
-      "ecto.seed": ["run priv/repo/seeds.exs"],
-      "ecto.setup": ["ecto.create", "ecto.migrate", "ecto.seed"],
+      "ecto.seed.db": ["run priv/repo/correios.ex"],
+      "ecto.seed.search": ["run priv/repo/logradouros_search.ex"],
+      "ecto.setup": ["ecto.create", "ecto.migrate", "ecto.seed.db"],
       "ecto.reset": ["ecto.drop", "ecto.setup"],
       test: ["ecto.create --quiet", "ecto.migrate", "test"],
     ]
