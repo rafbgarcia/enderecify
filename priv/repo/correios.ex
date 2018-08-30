@@ -1,15 +1,23 @@
 defmodule StatesApi.Repo.Correios do
-  alias StatesApi.{Repo, Regiao, Estado, Bairro, Localidade, CPC, Logradouro}
+  require Logger
+  alias StatesApi.{
+    Repo,
+    Regiao, Estado, Bairro, Localidade, CPC, Logradouro, LogradouroSearch,
+    Helpers
+  }
+
+  @insert_limit_for_testing 100
 
   def insert_data do
     sanitize_file_names()
 
     insert_regioes()
-    insert_estados()
-    insert_localidades()
-    insert_bairros()
+    estados = insert_estados()
+    localidades = insert_localidades()
+    bairros = insert_bairros()
     insert_cpcs()
-    insert_logradouros()
+    logradouros = insert_logradouros()
+    insert_logradouros_search(estados, localidades, bairros, logradouros)
   end
 
   defp insert_regioes do
@@ -20,7 +28,7 @@ defmodule StatesApi.Repo.Correios do
   end
 
   defp insert_estados do
-    records = Enum.map(ibge_states(), fn(state) ->
+    estados = Enum.map(ibge_states(), fn(state) ->
       Estado.new(%{
         sigla: state.sigla,
         nome: state.nome,
@@ -28,11 +36,11 @@ defmodule StatesApi.Repo.Correios do
       }).changes
     end)
 
-    bulk_insert(Estado, records)
+    bulk_insert(Estado, estados)
   end
 
   defp insert_localidades do
-    records = map_file("LOG_LOCALIDADE", fn(line) ->
+    localidades = map_file("LOG_LOCALIDADE", fn(line) ->
       [id, sigla_estado, nome, cep, situacao, tipo, _localidade_subordinacao, abbr, ibge_municipio_id] = line
 
       Localidade.new(%{
@@ -47,11 +55,11 @@ defmodule StatesApi.Repo.Correios do
       }).changes
     end)
 
-    bulk_insert(Localidade, records)
+    bulk_insert(Localidade, localidades)
   end
 
   defp insert_bairros do
-    records = map_file("LOG_BAIRRO", fn(line) ->
+    bairros = map_file("LOG_BAIRRO", fn(line) ->
       [id, sigla_estado, localidade_id, nome, abbr] = line
 
       Bairro.new(%{
@@ -63,7 +71,7 @@ defmodule StatesApi.Repo.Correios do
       }).changes
     end)
 
-    bulk_insert(Bairro, records)
+    bulk_insert(Bairro, bairros)
   end
 
   defp insert_cpcs do
@@ -83,9 +91,12 @@ defmodule StatesApi.Repo.Correios do
     bulk_insert(CPC, records)
   end
 
+  require IEx
   defp insert_logradouros do
-    Enum.each(ibge_states(), fn(%{sigla: uf}) ->
-      records = map_file("LOG_LOGRADOURO_#{uf}", fn(line) ->
+    logradouros = Enum.flat_map(ibge_states(), fn(%{sigla: uf}) ->
+      Logger.info ">>> Mapping LOG_LOGRADOURO_#{uf}"
+
+      map_file_slice("LOG_LOGRADOURO_#{uf}", @insert_limit_for_testing, fn(line) ->
         [id, sigla_estado, localidade_id, bairro_id, _bairro_fim, nome, complemento, cep, tipo, utilizacao, abbr] = line
 
         Logradouro.new(%{
@@ -101,9 +112,39 @@ defmodule StatesApi.Repo.Correios do
           abbr: to_utf8(abbr),
         }).changes
       end)
-
-      bulk_insert(Logradouro, records)
     end)
+
+    bulk_insert(Logradouro, logradouros)
+  end
+
+  defp insert_logradouros_search(estados, localidades, bairros, logradouros) do
+    logradouros_search = Enum.map(logradouros, fn(logradouro) ->
+      bairro = Enum.find(bairros, &(&1.id == logradouro.bairro_id))
+      estado = Enum.find(estados, &(&1.sigla == logradouro.sigla_estado))
+      localidade = Enum.find(localidades, &(&1.id == logradouro.localidade_id))
+
+      address = [
+        logradouro.tipo,
+        logradouro.nome,
+        logradouro["complemento"],
+        bairro.nome,
+        localidade.nome,
+        estado.sigla
+      ]
+      |> Enum.reject(&(is_nil(&1)))
+      |> Enum.join(" ")
+      |> Helpers.normalize_address()
+
+      LogradouroSearch.new(%{
+        sigla_estado: estado.sigla,
+        localidade_id: localidade.id,
+        table_name: "logradouros",
+        record_id: logradouro.id,
+        endereco: address
+      }).changes
+    end)
+
+    bulk_insert(LogradouroSearch, logradouros_search)
   end
 
   defp bulk_insert(schema, records) do
@@ -112,13 +153,28 @@ defmodule StatesApi.Repo.Correios do
     |> Enum.each(fn(batch) ->
       Repo.insert_all(schema, batch)
     end)
+
+    records
   end
 
   defp map_file(filename, callback) do
     Path.expand("priv/repo/Correios/#{filename}.TXT")
     |> File.stream!()
     |> Enum.map(fn(line) ->
-      String.split(line, "@") |> callback.()
+      String.split(line, "@")
+      # |> Enum.map(&to_utf8/1)
+      |> callback.()
+    end)
+  end
+
+  defp map_file_slice(filename, count, callback) do
+    Path.expand("priv/repo/Correios/#{filename}.TXT")
+    |> File.stream!()
+    |> Stream.take(5)
+    |> Stream.map(fn(line) ->
+      String.split(line, "@")
+      # |> Enum.map(&to_utf8/1)
+      |> callback.()
     end)
   end
 

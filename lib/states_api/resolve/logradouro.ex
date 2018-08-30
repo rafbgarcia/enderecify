@@ -1,6 +1,6 @@
 defmodule StatesApi.Resolve.Logradouro do
   use StatesApiWeb, :graphql_resolver
-  alias StatesApi.Logradouro
+  alias StatesApi.{Logradouro, LogradouroSearch, Helpers}
 
   def handle(%{cep: cep}, _) do
     {
@@ -9,17 +9,31 @@ defmodule StatesApi.Resolve.Logradouro do
     }
   end
 
+  def handle(%{busca: nil}, _), do: {:error, "Especifique os parametros `busca` e `localidade_id`"}
+
+  def handle(%{busca: ""}, _), do: {:error, "Especifique os parametros `busca` e `localidade_id`"}
+
+  def handle(%{busca: busca, localidade_id: localidade_id}, _) do
+    {
+      :ok,
+      Helpers.normalize_address(busca)
+      |> matching_address()
+      |> with_localidade(localidade_id)
+      |> Repo.all()
+    }
+  end
+
+  def handle(_, _), do: {:error, "Especifique os parametros `busca` e `localidade_id`"}
+
   # return Ex: Rua Nome Da Rua, Centro
   def linha1(logradouro, _args, _ctx) do
     bairro = bairro(logradouro).nome
+    street_name = [logradouro.tipo, logradouro.nome] |> join_address(" ")
 
     {
       :ok,
-      [
-        [logradouro.tipo, logradouro.nome] |> join_address(" "),
-        logradouro.complemento,
-        bairro
-      ] |> join_address()
+      [street_name, bairro]
+      |> join_address()
     }
   end
 
@@ -51,7 +65,27 @@ defmodule StatesApi.Resolve.Logradouro do
     query |> where(cep: ^digits)
   end
 
-  defp by_nome(query \\ Logradouro) do
+  defp with_localidade(query, localidade_id) do
+    case localidade_id do
+      nil -> query
+      _ -> query |> where(localidade_id: ^localidade_id)
+    end
+  end
+
+  defp matching_address(text) do
+    LogradouroSearch
+    |> where(fragment("endereco &@~ ?", ^text))
+    |> limit(20)
+    |> Repo.all()
+    |> Enum.map(&(Map.get(&1, :record_id)))
+    |> with_ids()
+  end
+
+  defp with_ids(logradouros_ids) do
+    from(l0 in Logradouro, where: l0.id in ^logradouros_ids)
+  end
+
+  defp by_nome(query) do
     query |> order_by(:nome)
   end
 
