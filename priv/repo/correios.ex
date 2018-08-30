@@ -32,7 +32,7 @@ defmodule StatesApi.Repo.Correios do
       Estado.new(%{
         sigla: state.sigla,
         nome: state.nome,
-        sigla_regiao: state.regiao.sigla
+        sigla_regiao: state.regiao.sigla,
       }).changes
     end)
 
@@ -46,12 +46,12 @@ defmodule StatesApi.Repo.Correios do
       Localidade.new(%{
         id: id,
         sigla_estado: sigla_estado,
-        nome: to_utf8(nome),
-        cep: sanitize_string(cep),
+        nome: nome,
+        cep: cep,
         situacao: situacao,
         tipo: tipo,
-        abbr: to_utf8(abbr),
-        ibge_municipio_id: sanitize_string(ibge_municipio_id)
+        abbr: abbr,
+        ibge_municipio_id: ibge_municipio_id,
       }).changes
     end)
 
@@ -66,8 +66,8 @@ defmodule StatesApi.Repo.Correios do
         id: id,
         sigla_estado: sigla_estado,
         localidade_id: localidade_id,
-        nome: to_utf8(nome),
-        abbr: to_utf8(abbr)
+        nome: nome,
+        abbr: abbr,
       }).changes
     end)
 
@@ -82,9 +82,9 @@ defmodule StatesApi.Repo.Correios do
         id: id,
         sigla_estado: sigla_estado,
         localidade_id: localidade_id,
-        nome: to_utf8(nome),
-        endereco: to_utf8(endereco),
-        cep: sanitize_string(cep),
+        nome: nome,
+        endereco: endereco,
+        cep: cep,
       }).changes
     end)
 
@@ -104,12 +104,12 @@ defmodule StatesApi.Repo.Correios do
           sigla_estado: sigla_estado,
           localidade_id: localidade_id,
           bairro_id: bairro_id,
-          nome: to_utf8(nome),
-          complemento: to_utf8(complemento),
-          cep: sanitize_string(cep),
-          tipo: to_utf8(tipo),
+          nome: nome,
+          complemento: complemento,
+          cep: cep,
+          tipo: tipo,
           utilizacao: utilizacao,
-          abbr: to_utf8(abbr),
+          abbr: abbr,
         }).changes
       end)
     end)
@@ -129,7 +129,7 @@ defmodule StatesApi.Repo.Correios do
         logradouro["complemento"],
         bairro.nome,
         localidade.nome,
-        estado.sigla
+        estado.sigla,
       ]
       |> Enum.reject(&(is_nil(&1)))
       |> Enum.join(" ")
@@ -162,7 +162,7 @@ defmodule StatesApi.Repo.Correios do
     |> File.stream!()
     |> Enum.map(fn(line) ->
       String.split(line, "@")
-      # |> Enum.map(&to_utf8/1)
+      |> Enum.map(&to_utf8/1)
       |> callback.()
     end)
   end
@@ -173,7 +173,7 @@ defmodule StatesApi.Repo.Correios do
     |> Stream.take(5)
     |> Stream.map(fn(line) ->
       String.split(line, "@")
-      # |> Enum.map(&to_utf8/1)
+      |> Enum.map(&to_utf8/1)
       |> callback.()
     end)
   end
