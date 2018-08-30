@@ -13,15 +13,18 @@ defmodule StatesApi.Resolve.Logradouro do
 
   def handle(%{busca: ""}, _), do: {:error, "Especifique uma busca"}
 
-  def handle(%{busca: busca, localidade_id: localidade_id}, _) do
+  def handle(%{busca: busca} = params, _) do
     {
       :ok,
       Helpers.normalize_address(busca)
       |> matching_address()
-      |> with_localidade(localidade_id)
+      |> with_localidade(params["localidade_id"])
       |> Repo.all()
     }
   end
+
+  def handle(_, _), do: {:error, "Especifique uma busca"}
+
 
   # return Ex: Rua Nome Da Rua, Centro
   def linha1(logradouro, _args, _ctx) do
@@ -60,7 +63,9 @@ defmodule StatesApi.Resolve.Logradouro do
   defp with_cep(query \\ Logradouro, cep) do
     digits = cep |> String.replace(~r/[^\d]/, "")
 
-    query |> where(cep: ^digits)
+    query
+    |> where(cep: ^digits)
+    |> limit(6)
   end
 
   defp with_localidade(query, localidade_id) do

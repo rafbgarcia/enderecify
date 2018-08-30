@@ -91,7 +91,6 @@ defmodule StatesApi.Repo.Correios do
     bulk_insert(CPC, records)
   end
 
-  require IEx
   defp insert_logradouros do
     logradouros = Enum.flat_map(ibge_states(), fn(%{sigla: uf}) ->
       Logger.info ">>> Mapping LOG_LOGRADOURO_#{uf}"
@@ -118,6 +117,7 @@ defmodule StatesApi.Repo.Correios do
   end
 
   defp insert_logradouros_search(estados, localidades, bairros, logradouros) do
+    Logger.info ">>> Mapping #{length logradouros} logradouros to logradouros_search"
     logradouros_search = Enum.map(logradouros, fn(logradouro) ->
       bairro = Enum.find(bairros, &(&1.id == logradouro.bairro_id))
       estado = Enum.find(estados, &(&1.sigla == logradouro.sigla_estado))
