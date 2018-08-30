@@ -9,9 +9,9 @@ defmodule StatesApi.Resolve.Logradouro do
     }
   end
 
-  def handle(%{busca: nil}, _), do: {:error, "Especifique os parametros `busca` e `localidade_id`"}
+  def handle(%{busca: nil}, _), do: {:error, "Especifique uma busca"}
 
-  def handle(%{busca: ""}, _), do: {:error, "Especifique os parametros `busca` e `localidade_id`"}
+  def handle(%{busca: ""}, _), do: {:error, "Especifique uma busca"}
 
   def handle(%{busca: busca, localidade_id: localidade_id}, _) do
     {
@@ -22,8 +22,6 @@ defmodule StatesApi.Resolve.Logradouro do
       |> Repo.all()
     }
   end
-
-  def handle(_, _), do: {:error, "Especifique os parametros `busca` e `localidade_id`"}
 
   # return Ex: Rua Nome Da Rua, Centro
   def linha1(logradouro, _args, _ctx) do
@@ -75,7 +73,7 @@ defmodule StatesApi.Resolve.Logradouro do
   defp matching_address(text) do
     LogradouroSearch
     |> where(fragment("endereco &@~ ?", ^text))
-    |> limit(20)
+    |> limit(6)
     |> Repo.all()
     |> Enum.map(&(Map.get(&1, :record_id)))
     |> with_ids()

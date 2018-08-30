@@ -96,7 +96,7 @@ defmodule StatesApi.Repo.Correios do
     logradouros = Enum.flat_map(ibge_states(), fn(%{sigla: uf}) ->
       Logger.info ">>> Mapping LOG_LOGRADOURO_#{uf}"
 
-      map_file_slice("LOG_LOGRADOURO_#{uf}", @insert_limit_for_testing, fn(line) ->
+      map_file("LOG_LOGRADOURO_#{uf}", fn(line) ->
         [id, sigla_estado, localidade_id, bairro_id, _bairro_fim, nome, complemento, cep, tipo, utilizacao, abbr] = line
 
         Logradouro.new(%{
@@ -167,16 +167,16 @@ defmodule StatesApi.Repo.Correios do
     end)
   end
 
-  defp map_file_slice(filename, count, callback) do
-    Path.expand("priv/repo/Correios/#{filename}.TXT")
-    |> File.stream!()
-    |> Stream.take(5)
-    |> Stream.map(fn(line) ->
-      String.split(line, "@")
-      |> Enum.map(&to_utf8/1)
-      |> callback.()
-    end)
-  end
+  # defp map_file_slice(filename, count, callback) do
+  #   Path.expand("priv/repo/Correios/#{filename}.TXT")
+  #   |> File.stream!()
+  #   |> Stream.take(5)
+  #   |> Stream.map(fn(line) ->
+  #     String.split(line, "@")
+  #     |> Enum.map(&to_utf8/1)
+  #     |> callback.()
+  #   end)
+  # end
 
   defp to_utf8(string) do
     :unicode.characters_to_binary(string, :latin1)
