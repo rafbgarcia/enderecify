@@ -3,3 +3,60 @@
 @import "./font-awesome.css";
 @import "./hljs.css";
 @import "./hljs-atom-one-dark.css";
+
+.queries [class*=col] {
+  margin-bottom: 1rem;
+}
+
+.frame-browser.editor:not(:first-child) {
+  margin-top: 2rem;
+}
+.frame-browser.editor .frame-body {
+  padding: 0;
+  overflow-y: auto;
+  min-height: 20rem
+}
+.frame-browser.editor .ace-editor {
+  height: 20rem;
+  margin-top: 2px;
+}
+.frame-browser.editor .ace-editor, .frame-browser.editor .ace-editor .ace_gutter {
+  background: transparent;
+}
+
+.frame-browser.result .frame-body {
+  padding: 0;
+  overflow-y: auto;
+  min-height: 30rem;
+  max-height: 30rem;
+  margin-bottom: 4rem;
+}
+.frame-browser.result .ace-editor {
+  height: 30rem;
+  margin-top: 2px;
+}
+.frame-browser.result .ace-editor, .frame-browser.result .ace-editor .ace_gutter {
+  background: transparent;
+}
+
+.send {
+  text-align: center;
+}
+.send a {
+  margin-top: 5rem;
+}
+.send a:not(:first-child) {
+  margin-top: 11.2rem;
+}
+
+.response {
+  border-bottom-left-radius: 10px;
+  background: #fff;
+  padding: 0.1rem 1rem;
+  border-top: 0;
+  font-size: 90%;
+  border-bottom-right-radius: 10px;
+  position: relative;
+  top: -2px;
+  border: 1px solid #05172a;
+}

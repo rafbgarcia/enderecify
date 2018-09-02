@@ -5,5 +5,6 @@ defmodule StatesApiWeb.Graphql.Type.Bairro do
     field(:id, :id)
     field(:nome, :string)
     field(:abbr, :string)
+    field(:localidade, :localidade, resolve: assoc(:localidade))
   end
 end

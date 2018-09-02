@@ -60,7 +60,6 @@ defmodule StatesApi.Repo.LogradouroSearch do
     [
       logradouro.tipo,
       logradouro.nome,
-      logradouro.complemento,
       bairro.nome,
       localidade.nome,
       estado.nome,

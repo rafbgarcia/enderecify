@@ -10,6 +10,7 @@
   </head>
   <body>
     <%= render @view_module, @view_template, assigns %>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.1/ace.js"></script>
     <script type="text/javascript" src="<%= Routes.static_path(@conn, "/js/app.js") %>"></script>
   </body>
 </html>

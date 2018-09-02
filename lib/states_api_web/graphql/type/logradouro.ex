@@ -5,10 +5,10 @@ defmodule StatesApiWeb.Graphql.Type.Logradouro do
     field(:estado, :estado, resolve: assoc(:estado))
     field(:localidade, :localidade, resolve: assoc(:localidade))
     field(:bairro, :bairro, resolve: assoc(:bairro))
-    field(:nome, :string)
+    field(:nome, :string, resolve: &StatesApi.Resolve.Logradouro.formatted_nome/3)
     field(:complemento, :string)
     field(:cep, :string)
-    field(:tipo, :string, description: "Rua, Travessa, Avenida")
+    # field(:tipo, :string, description: "Rua, Travessa, Avenida")
     field(:utilizacao, :string, description: "Indicador de utilização do tipo de logradouro (S ou N)")
     field(:abbr, :string)
 

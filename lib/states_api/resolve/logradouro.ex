@@ -1,4 +1,5 @@
 defmodule StatesApi.Resolve.Logradouro do
+  require IEx
   use StatesApiWeb, :graphql_resolver
   alias StatesApi.{Logradouro, LogradouroSearch, Helpers}
 
@@ -18,8 +19,8 @@ defmodule StatesApi.Resolve.Logradouro do
       :ok,
       Helpers.normalize_address(busca)
       |> matching_address()
-      |> with_localidade(params["localidade_id"])
-      |> Repo.all()
+      |> with_localidade(params[:localidade_id])
+      |> all_logradouros_from_search()
     }
   end
 
@@ -47,6 +48,10 @@ defmodule StatesApi.Resolve.Logradouro do
       [formatted_cep(logradouro.cep), localidade.nome, localidade.sigla_estado]
       |> join_address()
     }
+  end
+
+  def formatted_nome(%{tipo: tipo, nome: nome}, _args, _ctx) do
+    {:ok, "#{tipo} #{nome}"}
   end
 
   def formatted_cep(logradouro, _args, _ctx) do
@@ -78,14 +83,20 @@ defmodule StatesApi.Resolve.Logradouro do
   defp matching_address(text) do
     LogradouroSearch
     |> where(fragment("endereco &@~ ?", ^text))
+    |> order_by(fragment("pgroonga_score(tableoid, ctid) DESC"))
+  end
+
+  defp all_logradouros_with_ids(logradouros_ids) do
+    from(l0 in Logradouro, where: l0.id in ^logradouros_ids)
+    |> Repo.all()
+  end
+
+  defp all_logradouros_from_search(query) do
+    query
     |> limit(6)
     |> Repo.all()
     |> Enum.map(&(Map.get(&1, :record_id)))
-    |> with_ids()
-  end
-
-  defp with_ids(logradouros_ids) do
-    from(l0 in Logradouro, where: l0.id in ^logradouros_ids)
+    |> all_logradouros_with_ids()
   end
 
   defp by_nome(query) do

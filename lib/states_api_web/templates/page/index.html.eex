@@ -25,11 +25,13 @@
           <li class="nav-item">
             <a class="nav-link" href="#">Contato</a>
           </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Ajude o projeto</a>
+          </li>
           <li class="nav-item mr-0">
-            <a href="https://themes.getbootstrap.com/product/purpose-website-ui-kit/" target="_blank" class="nav-link d-lg-none">Assinar</a>
+            <a href="https://themes.getbootstrap.com/product/purpose-website-ui-kit/" target="_blank" class="nav-link d-lg-none">Começar</a>
             <a href="https://themes.getbootstrap.com/product/purpose-website-ui-kit/" target="_blank" class="btn btn-sm btn-white btn-circle btn-icon d-none d-lg-inline-flex">
-              <span class="btn-inner--icon"><i class="fas fa-shopping-cart"></i></span>
-              <span class="btn-inner--text">Assinar</span>
+              <span class="btn-inner--text">Começar</span>
             </a>
           </li>
         </ul>
@@ -175,6 +177,99 @@
     </div>
   </section>
 
+  <section>
+    <h3 class="heading h2 text-center mb-2">Faça o teste agora mesmo</h3>
+    <p class="lead text-center mb-4">Clique nas requisições abaixo para ver o código, alterar e fazer testes.</p>
+
+    <div class="container queries">
+      <div class="row mb-3">
+        <div class="col-md-3">
+          <a href="javascript:;" class="btn-block btn btn-secondary js_send_request" data-code="regioes">
+            Regiões
+          </a>
+        </div>
+        <div class="col-md-3">
+          <a href="javascript:;" class="btn-block btn btn-secondary js_send_request" data-code="estados">
+            Estados
+          </a>
+        </div>
+        <div class="col-md-3">
+          <a href="javascript:;" class="btn-block btn btn-secondary js_send_request" data-code="localidades">
+            Cidades de um estado
+          </a>
+        </div>
+        <div class="col-md-3">
+          <a href="javascript:;" class="btn-block btn btn-secondary js_send_request" data-code="bairros">
+            Bairros de uma cidade
+          </a>
+        </div>
+        <div class="col-md-3">
+          <a href="javascript:;" class="btn-block btn btn-secondary js_send_request" data-code="logradourosBusca">
+            Buscar logradouros
+          </a>
+        </div>
+        <div class="col-md-3">
+          <a href="javascript:;" class="btn-block btn btn-secondary js_send_request" data-code="logradourosBuscaCidade">
+            Logradouros numa cidade
+          </a>
+        </div>
+        <div class="col-md-3">
+          <a href="javascript:;" class="btn-block btn btn-secondary js_send_request" data-code="logradourosCep">
+            Buscar CEP
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+      <div class="row">
+        <div class="col-md-5">
+
+        <div class="frame-browser editor">
+          <div class="frame-header d-flex align-items-center floatfix">
+            <div class="col-6">
+              <span class="dot bg-red"></span>
+              <span class="dot bg-orange"></span>
+              <span class="dot bg-blue"></span>
+            </div>
+            <div class="col-6 text-right">
+              <small class="text-muted">Request em Graph Ql</small>
+            </div>
+          </div>
+          <div class="frame-body">
+            <div id="graphql-editor" class="ace-editor graphql">{
+  logradouros(busca: "av paulista sao paulo") {
+    linha1
+    linha2
+  }
+}</div>
+          </div>
+        </div>
+        <div id="response" class="d-none"></div>
+        <a href="javascript:;" class="btn btn-secondary btn-block mt-3 js_send_request">Enviar requisitação</a>
+      </div>
+
+      <div class="col-md-7">
+        <div class="frame-browser result shadow-lg">
+          <div class="frame-header d-flex align-items-center floatfix">
+            <div class="col-6">
+              <span class="dot bg-red"></span>
+              <span class="dot bg-orange"></span>
+              <span class="dot bg-blue"></span>
+            </div>
+            <div class="col-6 text-right">
+              <small class="text-muted">Resposta</small>
+            </div>
+          </div>
+          <div class="frame-body">
+            <div id="result" class="ace-editor">/* O resultado vai aparecer aqui */</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
   <!-- Pricing -->
   <section class="slice slice-lg">
     <div class="container">
@@ -182,12 +277,6 @@
         <h3 class="heading h2">Planos</h3>
       </div>
       <div class="pricing-container">
-        <%# <div class="text-center mb-md">
-          <div class="btn-group" role="group" aria-label="Basic example">
-            <button type="button" class="btn btn-secondary btn-circle active" data-pricing="monthly">Mensal</button>
-            <button type="button" class="btn btn-secondary btn-circle" data-pricing="yearly">Anual</button>
-          </div>
-        </div> %>
         <div class="d-flex align-items-center justify-content-center">
           <div class="card card-pricing popular box-shadow-3 text-center">
             <span class="h6 w-60 mx-auto px-4 py-1 rounded-bottom bg-primary text-white box-shadow-2">Gratuito</span>
