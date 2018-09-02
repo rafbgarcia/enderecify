@@ -82,7 +82,7 @@ defmodule StatesApi.Resolve.Logradouro do
 
   defp matching_address(text) do
     LogradouroSearch
-    |> where(fragment("endereco &@~ ?", ^text))
+    |> where(fragment("readings &^ ?", ^text))
     |> order_by(fragment("pgroonga_score(tableoid, ctid) DESC"))
   end
 

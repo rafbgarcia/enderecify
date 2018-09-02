@@ -6,6 +6,7 @@ defmodule StatesApi.LogradouroSearch do
     belongs_to(:localidade, Localidade)
     belongs_to(:estado, Estado, foreign_key: :sigla_estado, references: :sigla, type: :string)
     field(:endereco, :string)
+    field(:readings, {:array, :string})
     field(:table_name, :string)
     field(:record_id, :integer)
   end
@@ -13,6 +14,6 @@ defmodule StatesApi.LogradouroSearch do
   @doc false
   def new(attrs) do
     %StatesApi.LogradouroSearch{}
-    |> cast(attrs, [:localidade_id, :sigla_estado, :endereco, :table_name, :record_id])
+    |> cast(attrs, [:localidade_id, :sigla_estado, :endereco, :readings, :table_name, :record_id])
   end
 end

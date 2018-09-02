@@ -46,6 +46,7 @@ defmodule StatesApi.MixProject do
       {:absinthe_plug, "~> 1.4.0"},
       {:absinthe_ecto, "~> 0.1.3"},
       {:cors_plug, "~> 1.5"},
+      {:benchee, "~> 0.11", only: :dev},
     ]
   end
 

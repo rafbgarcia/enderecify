@@ -13,7 +13,7 @@ defmodule StatesApi.Resolve.Bairro do
     query |> where(localidade_id: ^localidade_id)
   end
 
-  defp by_nome(query \\ Bairro) do
+  defp by_nome(query) do
     query |> order_by(:nome)
   end
 end

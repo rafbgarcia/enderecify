@@ -13,7 +13,7 @@ defmodule StatesApi.Resolve.Localidade do
     query |> where(sigla_estado: ^sigla_estado)
   end
 
-  defp by_nome(query \\ Localidade) do
+  defp by_nome(query) do
     query |> order_by(:nome)
   end
 end

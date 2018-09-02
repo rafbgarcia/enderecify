@@ -3,6 +3,7 @@ defmodule StatesApi.Repo.LogradouroSearch do
   alias StatesApi.{Repo, Logradouro, Estado, Bairro, Localidade, LogradouroSearch, Helpers}
 
   def run do
+    Logger.info ">>> Deleting records"
     delete_all()
     insert()
   end
@@ -18,26 +19,22 @@ defmodule StatesApi.Repo.LogradouroSearch do
     localidades = Repo.all(Localidade) |> Enum.into(%{}, &({&1.id, &1}))
 
     Logger.info ">>> Fetching more than 1M logradouros..."
-    logradouros = Logradouro |> Repo.all()
+    logradouros = Logradouro |> Repo.stream()
 
-    Logger.info ">>> Inserting Logradouros Search..."
-    logradouros
-    |> Enum.chunk_every(30_000)
-    |> Enum.reduce([], fn(batch, array) ->
-      task = Task.async(fn -> reduce_batch(batch, estados, localidades, bairros) end)
-      [task | array]
-    end)
-    |> Enum.flat_map(&(Task.await(&1, 60 * 60 * 1000)))
-    |> Enum.chunk_every(7_000)
-    |> Enum.each(fn(batch) ->
-      Logger.info ">>> Inserting #{length batch} batch"
-      Repo.insert_all(LogradouroSearch, batch)
-    end)
+    Repo.transaction(fn ->
+      logradouros
+      |> Stream.chunk_every(10_000)
+      |> Stream.with_index()
+      |> Enum.each(fn({batch, i}) ->
+        records = reduce_batch(batch, estados, localidades, bairros)
+        Repo.insert_all(LogradouroSearch, records)
+        Logger.info ">>> Inseridos ate agora: #{length(batch) * (i+1)} logradouros"
+        Logger.info ">>> Faltam aprox.: #{1030000 / length(batch) * (i+1)} logradouros"
+      end)
+    end, timeout: :infinity)
   end
 
   defp reduce_batch(logradouros, estados, localidades, bairros) do
-    Logger.info ">>> Mapping #{length logradouros} logradouros"
-
     logradouros
     |> Enum.map(&(derive_search(&1, estados, localidades, bairros)))
   end
@@ -47,27 +44,39 @@ defmodule StatesApi.Repo.LogradouroSearch do
     bairro = bairros[logradouro.bairro_id]
     localidade = localidades[logradouro.localidade_id]
 
-    LogradouroSearch.new(%{
+    %{
       sigla_estado: estado.sigla,
       localidade_id: localidade.id,
       table_name: "logradouros",
       record_id: logradouro.id,
-      endereco: build_address(logradouro, bairro, localidade, estado)
-    }).changes
+      endereco: build_address(logradouro, bairro, localidade, estado),
+      readings: build_readings(logradouro, bairro, localidade, estado)
+    }
   end
 
   defp build_address(logradouro, bairro, localidade, estado) do
-    [
-      logradouro.tipo,
-      logradouro.nome,
-      bairro.nome,
-      localidade.nome,
-      estado.nome,
-      estado.sigla,
-    ]
-    |> Enum.reject(&(is_nil(&1)))
-    |> Enum.join(" ")
-    |> Helpers.normalize_address()
+    "#{logradouro.tipo} #{logradouro.nome} #{bairro.nome} #{localidade.nome} #{estado.nome} #{estado.sigla}"
+  end
+
+  def build_readings(logradouro, bairro, localidade, estado) do
+    nomes = [logradouro.nome, logradouro.abbr, "#{logradouro.tipo} #{logradouro.nome}"] |> Enum.map(&Helpers.normalize_address/1)
+    bairros = [bairro.nome, bairro.abbr] |> Enum.map(&Helpers.normalize_address/1)
+    localidades = [localidade.nome, localidade.abbr] |> Enum.map(&Helpers.normalize_address/1)
+    estados = [estado.nome, estado.sigla] |> Enum.map(&Helpers.normalize_address/1)
+
+    nomes
+    |> aggregate(bairros)
+    |> aggregate(localidades)
+    |> aggregate(estados)
+  end
+
+  defp aggregate(base, aggregations) do
+    l = Enum.flat_map(base, fn(base_text) ->
+      Enum.map(aggregations, &("#{base_text} #{&1}"))
+    end)
+    |> MapSet.new()
+    |> MapSet.to_list()
+    base ++ l
   end
 end
 

@@ -47,8 +47,8 @@
         <div class="col-lg-6">
           <div class="pt-lg-md pb-lg-md text-center">
             <h2 class="heading h1 text-white mb-3">A melhor API de endereços do Brasil</h2>
-            <p class="lead lh-180 text-white">A única que possibilita listar bairros das cidades</p>
-            <p class="lead lh-180 text-white">100% atualizada com os Correios</p>
+            <p class="lead lh-180 text-white">A única que possibilita listar os bairros de uma cidade</p>
+            <p class="lead lh-180 text-white">Base 100% atualizada</p>
           </div>
         </div>
       </div>
