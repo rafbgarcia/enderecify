@@ -1,34 +1,22 @@
-// We need to import the CSS so that webpack will load it.
-// The MiniCssExtractPlugin is used to separate it out into
-// its own CSS file.
 import css from "../css/app.css"
 
-// webpack automatically bundles all modules in your
-// entry points. Those entry points can be configured
-// in "webpack.config.js".
-//
-// Import dependencies
-//
 import "phoenix_html"
+import "bootstrap"
 
-// Import local files
-//
-// Local files can be imported directly using relative
-// paths "./socket" or full ones "web/static/js/socket".
+import "./font-awesome"
+import "./theme"
 
-// import socket from "./socket"
+// $('button').click(function () {
+//   const query = $('textarea').val()
 
-$('button').click(function () {
-  const query = $('textarea').val()
-
-  fetch('/api', {
-    method: 'POST',
-    headers: {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({query})
-  })
-  .then((resp) => resp.json())
-  .then((data) => $('#result').html(JSON.stringify(data)))
-})
+//   fetch('/api', {
+//     method: 'POST',
+//     headers: {
+//       'Accept': 'application/json',
+//       'Content-Type': 'application/json'
+//     },
+//     body: JSON.stringify({query})
+//   })
+//   .then((resp) => resp.json())
+//   .then((data) => $('#result').html(JSON.stringify(data)))
+// })

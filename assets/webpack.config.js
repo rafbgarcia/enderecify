@@ -38,6 +38,8 @@ module.exports = (env, options) => ({
     new webpack.ProvidePlugin({
       $: 'jquery',
       jQuery: 'jquery',
+      Popper: 'popper.js',
+      bootstrap: 'bootstrap',
     }),
   ]
 });

@@ -1,6 +1,223 @@
-<section>
+<%# <section>
   <textarea>{ regioes { sigla nome } }</textarea>
   <button>Enviar</button>
 
   <div id="result"></div>
-</section>
+</section> %>
+
+
+<header>
+  <nav class="navbar navbar-expand-lg navbar-transparent navbar-dark bg-dark py-3" id="navbar_main">
+    <div class="container">
+      <a class="navbar-brand mr-lg-5" href="../index.html"><strong>Enderecify</strong>API</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar_main_collapse" aria-controls="navbar_main" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbar_main_collapse">
+
+        <ul class="navbar-nav align-items-lg-center ml-lg-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="#">Início</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Documentação</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Contato</a>
+          </li>
+          <li class="nav-item mr-0">
+            <a href="https://themes.getbootstrap.com/product/purpose-website-ui-kit/" target="_blank" class="nav-link d-lg-none">Assinar</a>
+            <a href="https://themes.getbootstrap.com/product/purpose-website-ui-kit/" target="_blank" class="btn btn-sm btn-white btn-circle btn-icon d-none d-lg-inline-flex">
+              <span class="btn-inner--icon"><i class="fas fa-shopping-cart"></i></span>
+              <span class="btn-inner--text">Assinar</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+</header>
+<main>
+  <!-- Spotlight -->
+  <section class="slice slice-xl bg-primary bg-cover bg-size--contain" style="padding-bottom: 250px; background-image: url('<%= Routes.static_path(@conn, "/images/backgrounds/clouds-bottom.png") %>'); background-position: center bottom;">
+    <div class="container">
+      <div class="row row-grid align-items-center justify-content-center">
+        <div class="col-lg-6">
+          <div class="pt-lg-md pb-lg-md text-center">
+            <h2 class="heading h1 text-white mb-3">A melhor API de endereços do Brasil</h2>
+            <p class="lead lh-180 text-white">A única que possibilita listar bairros das cidades</p>
+            <p class="lead lh-180 text-white">100% atualizada com os Correios</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="container">
+    <div class="row">
+      <div class="col-lg-6">
+        <h6 class="text-primary mb-3">Exemplo de request</h6>
+        <div class="frame-browser shadow-lg">
+          <div class="frame-header d-flex align-items-center floatfix">
+            <div class="col-6">
+              <span class="dot bg-red"></span>
+              <span class="dot bg-orange"></span>
+              <span class="dot bg-blue"></span>
+            </div>
+            <div class="col-6 text-right">
+              <small class="text-muted"></small>
+            </div>
+          </div>
+          <div class="frame-body">
+            <pre class="highlight">
+              <code>{
+  bairros(localidadeId: 9668) {
+    id
+    nome
+  }
+}</code>
+            </pre>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-6">
+        <h6 class="text-primary mb-3">Resposta</h6>
+        <div class="frame-browser shadow-lg">
+          <div class="frame-header d-flex align-items-center floatfix">
+            <div class="col-6">
+              <span class="dot bg-red"></span>
+              <span class="dot bg-orange"></span>
+              <span class="dot bg-blue"></span>
+            </div>
+            <div class="col-6 text-right">
+              <small class="text-muted">HTML</small>
+            </div>
+          </div>
+          <div class="frame-body" style="overflow-y: auto; height: 300px;">
+            <pre class="highlight json"><code>
+{
+  "data": {
+    "bairros": [
+      {
+        "id": "29401",
+        "nome": "Aclimação"
+      },
+      {
+        "id": "29922",
+        "nome": "Alto da Boa Vista"
+      },
+      {
+        "id": "25223",
+        "nome": "Alto da Lapa"
+      },
+      /* ... */
+    ]
+  }
+}
+            </code></pre>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <section class="slice slice-lg">
+    <div class="container">
+      <div class="row row-grid align-items-center justify-content-around">
+        <div class="col-lg-5 order-lg-2">
+          <img src="<%= Routes.static_path(@conn, "/images/svg/scale.svg") %>" class="img-center img-fluid w-75 mx-auto">
+        </div>
+        <div class="col-lg-5 order-lg-1">
+          <div class="pr-md-4">
+            <h1 class="h3">Ultra rápido e estável</h1>
+            <p class="lead">Feito em Elixir, garante extrema estabilidade e rapidez. Além disso nossos servidores são em São Paulo, o que garante um tempo de resposta baixíssimo.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="slice slice-lg pt-0 mt-5" data-delimiter-after="1">
+    <div class="container">
+      <div class="row row-grid align-items-center justify-content-around">
+        <div class="col-lg-5">
+          <div class="bg-circles d-none">
+            <span></span>
+            <span></span>
+            <span></span>
+            <!-- <span></span> -->
+          </div>
+          <img src="<%= Routes.static_path(@conn, "/images/svg/static_assets.svg") %>" class="img-center img-fluid w-75 mx-auto">
+        </div>
+        <div class="col-lg-5">
+          <div class="pr-md-4">
+            <h1 class="h3">API flexível em Graph Ql</h1>
+            <p class="lead">Pegue apenas os dados que você precisa, tornando a resposta mais leve e rápida para o usuário final.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="slice slice-lg">
+    <div class="container">
+      <div class="row row-grid align-items-center justify-content-around">
+        <div class="col-lg-5 order-lg-2">
+          <img src="<%= Routes.static_path(@conn, "/images/svg/hello.svg") %>" class="img-center img-fluid w-75">
+        </div>
+        <div class="col-lg-5 order-lg-1">
+          <div class="pr-md-4">
+            <h1 class="h3">Feito por devs para devs</h1>
+            <p class="lead">Nós também somos desenvolvedores e sabemos o que você precisa. Já estava na hora de uma API de endereços boa e confiável no Brasil.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Pricing -->
+  <section class="slice slice-lg">
+    <div class="container">
+      <div class="mb-5 text-center">
+        <h3 class="heading h2">Planos</h3>
+      </div>
+      <div class="pricing-container">
+        <%# <div class="text-center mb-md">
+          <div class="btn-group" role="group" aria-label="Basic example">
+            <button type="button" class="btn btn-secondary btn-circle active" data-pricing="monthly">Mensal</button>
+            <button type="button" class="btn btn-secondary btn-circle" data-pricing="yearly">Anual</button>
+          </div>
+        </div> %>
+        <div class="d-flex align-items-center justify-content-center">
+          <div class="card card-pricing popular box-shadow-3 text-center">
+            <span class="h6 w-60 mx-auto px-4 py-1 rounded-bottom bg-primary text-white box-shadow-2">Gratuito</span>
+            <div class="card-header pt-4 border-0">
+              <h1 class="h1 font-weight-700 text-primary text-center mb-0">
+                Grátis
+              </h1>
+            </div>
+            <div class="card-body pt-0">
+              <ul class="list-unstyled mb-4">
+                <li>Acesso limitado</li>
+                <li>Domínios ilimitados</li>
+                <li>Base de dados sempre atualizada</li>
+              </ul>
+              <button type="button" class="btn btn-primary mb-3">Começar</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+<footer class="footer py-5 ">
+  <div class="container">
+    <div class="align-items-center">
+      <div class="text-center">
+        <span class="d-block">
+          &copy; 2018 Enderecify. Todos os direitos reservados.
+        </span>
+      </div>
+    </div>
+  </div>
+</footer>
