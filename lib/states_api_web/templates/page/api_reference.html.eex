@@ -1,0 +1,210 @@
+<%
+url = "https://#{Enum.at(@conn.req_headers, 0) |> elem(1)}"
+%>
+<main>
+  <div class="slice slice-xl bg-primary bg-cover bg-size--contain" style="padding-bottom: 150px; background-image: url('<%= Routes.static_path(@conn, "/images/backgrounds/clouds-bottom.png") %>'); background-position: center bottom; background-repeat: repeat-x;">
+  </div>
+
+  <section class="container">
+    <nav>
+      <h6>Menu</h6>
+      <ul class="pl-3">
+        <li><a href="#intro">Introdução</a></li>
+        <li><a href="#consultas">Consultas</a></li>
+        <li><a href="#objetos">Objetos</a></li>
+      </ul>
+    </nav>
+
+    <h2 id="intro" class="h2 heading">
+      <a href="#intro" class="h5"><i class="fa fa-link"></i></a>
+      Introdução
+    </h2>
+    <p>
+      As requisições são um simples POST com uma chave <code>query</code>
+      contendo uma consulta <a href="https://graphql.org/" target="_blank">Graph Ql</a>,
+      sendo uma String.
+    </p>
+
+
+    <pre class="highlight sh"><code># Um simples cURL
+$ curl <%= url %> -X POST -d "query={ regioes { nome } }"</code></pre>
+    <pre class="highlight js"><code>// Em JavaScript
+fetch('<%= url %>', {
+  method: 'POST',
+  headers: {
+    'Accept': 'application/json',
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({ query: '{ regioes { nome } }' })
+})
+.then(resp => resp.json())
+.then(data => console.log(data))</code></pre>
+
+    <p>A resposta é um JSON com a consulta dentro da chave <code>data</code>:</p>
+
+
+    <pre class="highlight sh"><code>{
+  "data": {
+    "regioes": [
+      {
+        "nome": "Centro-Oeste"
+      },
+      {
+        "nome": "Nordeste"
+      },
+      {
+        "nome": "Norte"
+      },
+      {
+        "nome": "Sudeste"
+      },
+      {
+        "nome": "Sul"
+      }
+    ]
+  }
+}</code></pre>
+
+
+    <h2 id="consultas" class="h2 heading mt-5">
+      <a href="#consultas" class="h5"><i class="fa fa-link"></i></a>
+      Consultas
+    </h2>
+
+    <section>
+      <h3 class="mt-3">Regiões</h3>
+      <pre class="highlight graphqlschema"><code>regioes()</code></pre>
+      <h5>Exemplos</h5>
+      <pre class="highlight graphqlschema"><code>{
+  regioes {
+    sigla
+    nome
+  }
+}</code></pre>
+
+
+      <h3 class="mt-3">Estados</h3>
+      <pre class="highlight graphqlschema"><code>/**
+ * @param {String} siglaRegiao - Especifique se quiser os estados de determinada região. Ex: "SE"
+ */
+localidades(siglaRegiao: String)</code></pre>
+      <h5>Exemplos</h5>
+      <pre class="highlight graphqlschema"><code>{
+  estados {
+    sigla
+    nome
+    regiao { sigla }
+  }
+}</code></pre>
+
+      <h3 class="mt-3">Localidades (cidades)</h3>
+      <pre class="highlight graphqlschema"><code>/**
+ * @param {String!} siglaEstado - Lista cidades de um estado.
+ */
+localidades(siglaEstado: String!)</code></pre>
+      <h5>Exemplos</h5>
+      <pre class="highlight graphqlschema"><code>{
+  localidades(siglaEstado: "SE") {
+    id nome
+  }
+}</code></pre>
+
+      <h3 class="mt-3">Bairros</h3>
+      <pre class="highlight graphqlschema"><code>/**
+ * @param {ID!} localidadeId - Lista os bairros de uma cidade. Ex: 9668
+ */
+bairros(localidadeId: ID!)</code></pre>
+      <h5>Exemplos</h5>
+      <pre class="highlight graphqlschema"><code>{
+  bairros(localidadeId: 1234) {
+    id
+    nome
+  }
+}</code></pre>
+
+      <h3 class="mt-3">Logradouros</h3>
+      <pre class="highlight graphqlschema"><code>/**
+ * @param {String} cep - Removemos os caracteres não numéricos, pode ser em qualquer formato: "12345-678", "123435678", "1a2b3_45-6.78"
+ * @param {String} busca - Auto completa logradouros. Ex: "rua marechal curitiba pr"
+ * @param {ID} localidadeId - Auto completa logradouros de determinada cidade. Ex: 9668
+ */
+logradouros(cep: String, busca: String, localidadeId: String)</code></pre>
+
+      <h5>Exemplos</h5>
+      <pre class="highlight graphqlschema"><code>{
+  logradouros(cep: "12345-123") {
+    linha1
+  }
+}</code></pre>
+      <pre class="highlight graphqlschema"><code>{
+  logradouros(busca: "av paulista sao paulo") {
+    linha1
+  }
+}</code></pre>
+      <pre class="highlight graphqlschema"><code>{
+  logradouros(busca: "av pauli", localidadeId: 9668) {
+    linha1
+  }
+}</code></pre>
+    </section>
+
+
+    <h2 id="objetos" class="h2 heading mt-5">
+      <a href="#objetos" class="h5"><i class="fa fa-link"></i></a>
+      Objetos
+    </h2>
+
+    <p><code>Localidades</code> são cidades. Ex: Rio de Janeiro, São Paulo, Curitiba, etc.</p>
+    <p><code>Logradouros</code> são as ruas, avenidas das cidades.</p>
+    <section class="row graphql-objects">
+      <div class="col-md-4">
+        <pre class="highlight graphqlschema"><code>type Regiao {
+  nome: String
+  sigla: String
+  estados: [Estado]
+}</code></pre>
+      </div>
+
+      <div class="col-md-4">
+        <pre class="highlight graphqlschema"><code>type Estado {
+  nome: String
+  sigla: String
+  regiao: Regiao
+}</code></pre>
+      </div>
+
+      <div class="col-md-4">
+        <pre class="highlight graphqlschema"><code>type Localidade {
+  id: ID
+  nome: String
+  abbr: String
+}</code></pre>
+      </div>
+
+      <div class="col-md-4">
+        <pre class="highlight graphqlschema"><code>type Bairro {
+  id: ID
+  nome: String
+  abbr: String
+  localidade: Localidade
+}</code></pre>
+      </div>
+
+      <div class="col-md-4">
+        <pre class="highlight graphqlschema"><code>type Logradouro {
+  nome: String
+  complemento: String
+  cep: String
+  abbr: String
+  formatted_cep: String
+  linha1: String
+  linha2: String
+  estado: Estado
+  localidade: Localidade
+  bairro: Bairro
+}</code></pre>
+      </div>
+
+    </section>
+  </section>
+</main>

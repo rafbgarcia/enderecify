@@ -9,7 +9,7 @@ defmodule StatesApiWeb.Graphql.Type.Logradouro do
     field(:complemento, :string)
     field(:cep, :string)
     # field(:tipo, :string, description: "Rua, Travessa, Avenida")
-    field(:utilizacao, :string, description: "Indicador de utilização do tipo de logradouro (S ou N)")
+    # field(:utilizacao, :string, description: "Indicador de utilização do tipo de logradouro (S ou N)")
     field(:abbr, :string)
 
     field(:formatted_cep, :string, resolve: &StatesApi.Resolve.Logradouro.formatted_cep/3)

@@ -9,7 +9,54 @@
     <link rel="stylesheet" href="<%= Routes.static_path(@conn, "/css/app.css") %>"/>
   </head>
   <body>
+    <header>
+      <nav class="navbar navbar-expand-lg navbar-transparent navbar-dark bg-primary py-3" id="navbar_main">
+        <div class="container">
+          <a class="navbar-brand mr-lg-5" href="<%= Routes.page_path(@conn, :index) %>"><strong>Enderecify</strong>API</a>
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar_main_collapse" aria-controls="navbar_main" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbar_main_collapse">
+
+            <ul class="navbar-nav align-items-lg-center ml-lg-auto">
+              <li class="nav-item">
+                <a class="nav-link" href="<%= Routes.page_path(@conn, :index) %>">Início</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="<%= Routes.page_path(@conn, :api_reference) %>">Documentação</a>
+              </li>
+              <%# <li class="nav-item">
+                <a class="nav-link" href="#">Contato</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">Ajude o projeto</a>
+              </li> %>
+              <li class="nav-item mr-0">
+                <a href="<%= Routes.page_path(@conn, :index) %>" class="nav-link d-lg-none">Começar</a>
+                <a href="<%= Routes.page_path(@conn, :index) %>" class="btn btn-sm btn-white btn-circle btn-icon d-none d-lg-inline-flex">
+                  <span class="btn-inner--text">Começar</span>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+    </header>
+
     <%= render @view_module, @view_template, assigns %>
+
+    <footer class="footer py-5 ">
+      <div class="container">
+        <div class="align-items-center">
+          <div class="text-center">
+            <span class="d-block">
+              &copy; 2018 Enderecify. Todos os direitos reservados.
+            </span>
+          </div>
+        </div>
+      </div>
+    </footer>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.1/ace.js"></script>
     <script type="text/javascript" src="<%= Routes.static_path(@conn, "/js/app.js") %>"></script>
   </body>

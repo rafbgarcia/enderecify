@@ -1,54 +1,14 @@
-<%# <section>
-  <textarea>{ regioes { sigla nome } }</textarea>
-  <button>Enviar</button>
 
-  <div id="result"></div>
-</section> %>
-
-
-<header>
-  <nav class="navbar navbar-expand-lg navbar-transparent navbar-dark bg-dark py-3" id="navbar_main">
-    <div class="container">
-      <a class="navbar-brand mr-lg-5" href="../index.html"><strong>Enderecify</strong>API</a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar_main_collapse" aria-controls="navbar_main" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbar_main_collapse">
-
-        <ul class="navbar-nav align-items-lg-center ml-lg-auto">
-          <li class="nav-item">
-            <a class="nav-link" href="#">Início</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Documentação</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Contato</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Ajude o projeto</a>
-          </li>
-          <li class="nav-item mr-0">
-            <a href="https://themes.getbootstrap.com/product/purpose-website-ui-kit/" target="_blank" class="nav-link d-lg-none">Começar</a>
-            <a href="https://themes.getbootstrap.com/product/purpose-website-ui-kit/" target="_blank" class="btn btn-sm btn-white btn-circle btn-icon d-none d-lg-inline-flex">
-              <span class="btn-inner--text">Começar</span>
-            </a>
-          </li>
-        </ul>
-      </div>
-    </div>
-  </nav>
-</header>
 <main>
   <!-- Spotlight -->
   <section class="slice slice-xl bg-primary bg-cover bg-size--contain" style="padding-bottom: 250px; background-image: url('<%= Routes.static_path(@conn, "/images/backgrounds/clouds-bottom.png") %>'); background-position: center bottom;">
     <div class="container">
       <div class="row row-grid align-items-center justify-content-center">
-        <div class="col-lg-6">
+        <div class="col-lg-7">
           <div class="pt-lg-md pb-lg-md text-center">
             <h2 class="heading h1 text-white mb-3">A melhor API de endereços do Brasil</h2>
-            <p class="lead lh-180 text-white">A única que possibilita listar os bairros de uma cidade</p>
             <p class="lead lh-180 text-white">Base 100% atualizada</p>
+            <p class="lead lh-180 text-white">A única que possibilita listar os bairros de uma cidade</p>
           </div>
         </div>
       </div>
@@ -299,14 +259,3 @@
     </div>
   </section>
 </main>
-<footer class="footer py-5 ">
-  <div class="container">
-    <div class="align-items-center">
-      <div class="text-center">
-        <span class="d-block">
-          &copy; 2018 Enderecify. Todos os direitos reservados.
-        </span>
-      </div>
-    </div>
-  </div>
-</footer>

@@ -4,4 +4,8 @@ defmodule StatesApiWeb.PageController do
   def index(conn, _params) do
     render conn, "index.html"
   end
+
+  def api_reference(conn, _params) do
+    render conn, "api_reference.html"
+  end
 end

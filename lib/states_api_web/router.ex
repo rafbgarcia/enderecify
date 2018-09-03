@@ -17,11 +17,12 @@ defmodule StatesApiWeb.Router do
     pipe_through :browser
 
     get "/", PageController, :index
+    get "/api", PageController, :api_reference
   end
 
-  scope "/api" do
+  scope "/" do
     pipe_through :api
 
-    forward("/", Absinthe.Plug.GraphiQL, schema: StatesApiWeb.Graphql.Schema, json_codec: Phoenix.json_library())
+    post("/", Absinthe.Plug.GraphiQL, schema: StatesApiWeb.Graphql.Schema, json_codec: Phoenix.json_library())
   end
 end

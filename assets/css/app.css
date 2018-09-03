@@ -60,3 +60,8 @@
   top: -2px;
   border: 1px solid #05172a;
 }
+
+
+.graphql-objects code {
+  min-height: 18rem;
+}

@@ -35,7 +35,7 @@ const queries = {
   }
 }`,
   logradourosBusca: `{
-  logradouros(busca: "rua sen salgado filho rs") {
+  logradouros(busca: "av paulista sao paulo sp") {
     linha1
     cidade: localidade { nome }
   }
@@ -67,7 +67,7 @@ $('.js_send_request').click(function () {
   ace.edit($('#graphql-editor')[0]).setValue(query, -1)
   const t0 = performance.now()
 
-  fetch('/api', {
+  fetch('/', {
     method: 'POST',
     headers: {
       'Accept': 'application/json',

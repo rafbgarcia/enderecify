@@ -12,8 +12,8 @@ defmodule StatesApi.LogradouroSearch do
   end
 
   @doc false
-  def new(attrs) do
-    %StatesApi.LogradouroSearch{}
-    |> cast(attrs, [:localidade_id, :sigla_estado, :endereco, :readings, :table_name, :record_id])
-  end
+  # def new(attrs) do
+  #   %StatesApi.LogradouroSearch{}
+  #   |> cast(attrs, [:localidade_id, :sigla_estado, :endereco, :readings, :table_name, :record_id])
+  # end
 end
