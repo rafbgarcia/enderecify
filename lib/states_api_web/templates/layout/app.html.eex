@@ -25,9 +25,9 @@
               <li class="nav-item">
                 <a class="nav-link" href="<%= Routes.page_path(@conn, :api_reference) %>">Documentação</a>
               </li>
-              <%# <li class="nav-item">
-                <a class="nav-link" href="#">Contato</a>
-              </li> %>
+              <li class="nav-item">
+                <a class="nav-link" href="https://github.com/Enderecify/Enderecify.github.io" target="_blank">Github</a>
+              </li>
               <li class="nav-item">
                 <a class="nav-link" href="<%= Routes.page_path(@conn, :donate) %>">Ajude o projeto</a>
               </li>

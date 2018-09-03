@@ -71,6 +71,12 @@ fetch('<%= url %>', {
       Consultas
     </h2>
 
+    <p>
+      Acesse
+      <a href="https://enderecify.github.io/rootquerytype.doc.html" target="_blank">enderecify.github.io</a>
+      para ver em outro formato.
+    </p>
+
     <section>
       <h3 class="mt-3">Regiões</h3>
       <pre class="highlight graphqlschema"><code>regioes()</code></pre>
