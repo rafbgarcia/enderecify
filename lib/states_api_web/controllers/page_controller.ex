@@ -8,4 +8,8 @@ defmodule StatesApiWeb.PageController do
   def api_reference(conn, _params) do
     render conn, "api_reference.html"
   end
+
+  def donate(conn, _params) do
+    render conn, "donate.html"
+  end
 end

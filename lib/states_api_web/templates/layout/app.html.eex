@@ -27,10 +27,10 @@
               </li>
               <%# <li class="nav-item">
                 <a class="nav-link" href="#">Contato</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#">Ajude o projeto</a>
               </li> %>
+              <li class="nav-item">
+                <a class="nav-link" href="<%= Routes.page_path(@conn, :donate) %>">Ajude o projeto</a>
+              </li>
               <li class="nav-item mr-0">
                 <a href="<%= Routes.page_path(@conn, :index) %>" class="nav-link d-lg-none">Começar</a>
                 <a href="<%= Routes.page_path(@conn, :index) %>" class="btn btn-sm btn-white btn-circle btn-icon d-none d-lg-inline-flex">

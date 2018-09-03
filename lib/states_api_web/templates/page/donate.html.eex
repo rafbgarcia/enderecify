@@ -1,0 +1,28 @@
+<main>
+  <div class="slice slice-xl bg-primary bg-cover bg-size--contain" style="padding-bottom: 150px; background-image: url('<%= Routes.static_path(@conn, "/images/backgrounds/clouds-bottom.png") %>'); background-position: center bottom; background-repeat: repeat-x;">
+  </div>
+
+  <section class="col-md-4 offset-md-4">
+    <h2 class="h2 text-center heading mb-4">Obrigado por ajudar!</h2>
+    <p>
+      Existem diversos custos envolvidos em manter o Enderecify no ar, como
+      atualizar a base de endereços, servidores, manutenção, suporte, etc.
+    </p>
+
+    <p>
+      Contribuir financeiramente não só nos ajuda a manter o projeto
+      rodando como nos incentiva a fazer mais por ele.
+    </p>
+    <p>É a prova de que o Enderecify está realmente sendo útil para os desenvolvedores do Brasil.</p>
+
+
+    <div class="text-center mt-5">
+      <form action="https://pagseguro.uol.com.br/checkout/v2/donation.html" method="post">
+        <input type="hidden" name="currency" value="BRL" />
+        <input type="hidden" name="receiverEmail" value="rafbgarcia@gmail.com" />
+        <input type="hidden" name="iot" value="button" />
+        <input type="image" src="https://stc.pagseguro.uol.com.br/public/img/botoes/doacoes/209x48-doar-assina.gif" name="submit" alt="Pague com PagSeguro - é rápido, grátis e seguro!" />
+      </form>
+    </div>
+  </section>
+</main>

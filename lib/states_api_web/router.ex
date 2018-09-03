@@ -18,6 +18,7 @@ defmodule StatesApiWeb.Router do
 
     get "/", PageController, :index
     get "/api", PageController, :api_reference
+    get "/doar", PageController, :donate
   end
 
   scope "/" do
