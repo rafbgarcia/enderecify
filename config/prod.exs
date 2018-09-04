@@ -45,8 +45,8 @@ config :logger, level: :info
 # We also recommend setting `force_ssl` in your endpoint, ensuring
 # no data is ever sent via http, always redirecting to https:
 #
-#     config :states_api, StatesApiWeb.Endpoint,
-#       force_ssl: [hsts: true]
+config :states_api, StatesApiWeb.Endpoint,
+  force_ssl: [hsts: true]
 #
 # Check `Plug.SSL` for all available options in `force_ssl`.
 

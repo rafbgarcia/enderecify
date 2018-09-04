@@ -251,7 +251,7 @@
                 <li>Domínios ilimitados</li>
                 <li>Base de dados sempre atualizada</li>
               </ul>
-              <button type="button" class="btn btn-primary mb-3">Começar</button>
+              <a href="<%= Routes.page_path(@conn, :api_reference) %>" class="btn btn-primary mb-3">Começar</a>
             </div>
           </div>
         </div>

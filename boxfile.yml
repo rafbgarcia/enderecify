@@ -5,13 +5,13 @@ run.config:
     runtime: elixir-1.6
     erlang_runtime: erlang-20
 
-  # we need nodejs in development
-  # ensure inotify exists for hot-code reloading
   extra_packages:
     - git
 
+  # we need nodejs in development
+  # ensure inotify exists for hot-code reloading
   dev_packages:
-    - nodejs-8.9
+    - nodejs
     - inotify-tools
 
   # cache node_modules
@@ -24,6 +24,7 @@ run.config:
 
   # enable the filesystem watcher
   fs_watch: true
+
 
 deploy.config:
   # generate the static assets digest
@@ -43,4 +44,4 @@ web.main:
   start: node-start mix phx.server
 
 data.db:
-  image: nanobox/postgresql:9.6
+  image: nanobox/postgresql
