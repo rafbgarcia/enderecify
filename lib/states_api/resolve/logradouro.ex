@@ -1,5 +1,4 @@
 defmodule StatesApi.Resolve.Logradouro do
-  require IEx
   use StatesApiWeb, :graphql_resolver
   alias StatesApi.{Logradouro, LogradouroSearch, Helpers}
 

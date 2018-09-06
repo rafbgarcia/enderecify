@@ -9,6 +9,9 @@ use Mix.Config
 config :states_api,
   ecto_repos: [StatesApi.Repo]
 
+config :enderecify_api,
+  repo: StatesApi.Repo
+
 # Configures the endpoint
 config :states_api, StatesApiWeb.Endpoint,
   url: [host: "localhost"],

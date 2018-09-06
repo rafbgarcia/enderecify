@@ -42,10 +42,9 @@ defmodule StatesApi.MixProject do
       {:gettext, "~> 0.11"},
       {:jason, "~> 1.0"},
       {:cowboy, "~> 1.0"},
-      {:absinthe, "~> 1.4.13"},
       {:absinthe_plug, "~> 1.4.0"},
-      {:absinthe_ecto, "~> 0.1.3"},
       {:cors_plug, "~> 1.5"},
+      {:enderecify_api,  "~> 1.0"},
       {:benchee, "~> 0.11", only: :dev},
     ]
   end
