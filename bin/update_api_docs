@@ -1,3 +1,7 @@
+#!/bin/sh
+
+# Updates GraphQL docs using graphdoc
+
 graphdoc -e http://localhost:4000/ -o ./doc/schema
 rm -rf ../enderecify-api-docs
 mv doc/schema ../enderecify-api-docs

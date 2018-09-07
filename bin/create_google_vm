@@ -1,0 +1,20 @@
+#!/bin/sh
+BUCKET_NAME="enderecify-releases"
+RELEASE_URL="gs://${BUCKET_NAME}/enderecify-release"
+
+gcloud compute instances create enderecify-instance \
+  --image-family debian-9 \
+  --image-project debian-cloud \
+  --machine-type g1-small \
+  --scopes "userinfo-email,cloud-platform" \
+  --metadata-from-file startup-script=instance-startup.sh \
+  --metadata release-url=$RELEASE_URL \
+  --zone southamerica-east1-b \
+  --tags http-server,https-server
+
+
+gcloud compute firewall-rules create default-allow-http-8080 \
+    --allow tcp:8080 \
+    --source-ranges 0.0.0.0/0 \
+    --target-tags http-server \
+    --description "Allow port 8080 access to http-server"

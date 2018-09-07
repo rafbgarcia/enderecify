@@ -10,10 +10,17 @@ use Mix.Config
 # which you should run after static files are built and
 # before starting your production server.
 config :states_api, StatesApiWeb.Endpoint,
-  http: [port: 8080],
-  # http: [:inet6, port: System.get_env("PORT") || 4000],
+  # http: [port: 8080],
+  http: [:inet6, port: System.get_env("PORT") || 4000],
   url: [host: "enderecify.com", port: 80],
   cache_static_manifest: "priv/static/cache_manifest.json"
+
+
+  # http: [port: {:system, "PORT"}],
+  # server: true,
+  # root: ".",
+  # url: [host: "enderecify.com", port: 80],
+  # cache_static_manifest: "priv/static/cache_manifest.json"
 
 # Do not print debug messages in production
 config :logger, level: :info
@@ -45,8 +52,8 @@ config :logger, level: :info
 # We also recommend setting `force_ssl` in your endpoint, ensuring
 # no data is ever sent via http, always redirecting to https:
 #
-config :states_api, StatesApiWeb.Endpoint,
-  force_ssl: [hsts: true]
+# config :states_api, StatesApiWeb.Endpoint,
+#   force_ssl: [hsts: true]
 #
 # Check `Plug.SSL` for all available options in `force_ssl`.
 
@@ -67,4 +74,16 @@ config :states_api, StatesApiWeb.Endpoint,
 
 # Finally import the config/prod.secret.exs which should be versioned
 # separately.
-import_config "prod.secret.exs"
+
+# import_config "prod.secret.exs"
+config :states_api, StatesApiWeb.Endpoint,
+  secret_key_base: System.get_env("SECRET_KEY_BASE")
+
+# Configure your database
+config :states_api, StatesApi.Repo,
+  url: System.get_env("DATABASE_URL"),
+  # username: System.get_env("DATA_DB_USER"),
+  # password: System.get_env("DATA_DB_PASS"),
+  # hostname: System.get_env("DATA_DB_HOST"),
+  # database: "states_api_prod",
+  pool_size: 15
