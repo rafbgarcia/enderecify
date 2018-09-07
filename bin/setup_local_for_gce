@@ -1,0 +1,4 @@
+#!/bin/sh
+
+# Install dokku on server
+gcloud compute --project "enderecify-215617" ssh --zone "southamerica-east1-b" "enderecify-dokku" --command "sudo sshcommand acl-add dokku ssh-key-for-dokku-push `cat ~/.ssh/id_rsa.pub`"

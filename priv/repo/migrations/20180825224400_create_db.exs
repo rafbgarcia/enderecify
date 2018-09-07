@@ -9,7 +9,6 @@ defmodule StatesApi.Repo.Migrations.CreateDb do
     create_cpcs()
     create_logradouros()
     create_logradouros_search()
-    # create_functions()
   end
 
   defp create_regioes do
@@ -77,7 +76,7 @@ defmodule StatesApi.Repo.Migrations.CreateDb do
   end
 
   defp create_logradouros_search do
-    # execute "CREATE EXTENSION pgroonga"
+    execute "CREATE EXTENSION pgroonga"
 
     create table(:logradouros_search) do
       add :localidade_id, references(:localidades, on_delete: :delete_all), comment: "Usado para achar localidades de uma cidade"
@@ -88,16 +87,16 @@ defmodule StatesApi.Repo.Migrations.CreateDb do
       add :record_id, :bigint, comment: "ID do registro na tabela de referência"
     end
 
-    # execute """
-    #   CREATE INDEX pgroonga_logradouros_search_prefix_search
-    #   ON logradouros_search
-    #   USING pgroonga(endereco pgroonga_text_term_search_ops_v2, readings pgroonga_text_array_term_search_ops_v2);
-    # """
-    # execute """
-    #   CREATE INDEX pgroonga_logradouros_search_full_text_search
-    #   ON logradouros_search
-    #   USING pgroonga(endereco)
-    #   WITH (tokenizer = 'TokenBigramSplitSymbolAlphaDigit');
-    # """
+    execute """
+      CREATE INDEX pgroonga_logradouros_search_prefix_search
+      ON logradouros_search
+      USING pgroonga(endereco pgroonga_text_term_search_ops_v2, readings pgroonga_text_array_term_search_ops_v2);
+    """
+    execute """
+      CREATE INDEX pgroonga_logradouros_search_full_text_search
+      ON logradouros_search
+      USING pgroonga(endereco)
+      WITH (tokenizer = 'TokenBigramSplitSymbolAlphaDigit');
+    """
   end
 end

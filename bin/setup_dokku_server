@@ -1,0 +1,56 @@
+#!/bin/sh
+
+APP_NAME=enderecify
+DB_NAME=${APP_NAME}_prod
+DOMAIN=enderecify.com
+EMAIL=rafbgarcia@gmail.com
+
+echo ">>> Install dokku"
+
+gcloud compute --project "enderecify-215617" ssh --zone "southamerica-east1-b" "enderecify-dokku" \
+  --command "wget https://raw.githubusercontent.com/dokku/dokku/v0.12.12/bootstrap.sh"
+
+gcloud compute --project "enderecify-215617" ssh --zone "southamerica-east1-b" "enderecify-dokku" \
+  --command "sudo DOKKU_TAG=v0.12.12 bash bootstrap.sh"
+
+gcloud compute --project "enderecify-215617" ssh --zone "southamerica-east1-b" "enderecify-dokku" \
+  --command "sudo sshcommand acl-add dokku ssh-key-for-dokku-push `cat ~/.ssh/id_rsa.pub`"
+
+
+echo ">>> Create app"
+
+dokku apps:create $APP_NAME
+dokku config:set $APP_NAME HOSTNAME=$DOMAIN
+dokku config:set $APP_NAME LC_ALL=en_US.utf8
+dokku config:set $APP_NAME SECRET_KEY_BASE=QJ8eGGsMqLo3+Q7ViwsRtlFCiBVNxBJfOMSJHdtxaXZmQdbVDhdG/JIDyzJWIE+p
+
+echo "> Go to http://<INSTANCE_IP> and setup Dokku"
+
+echo ">>> Database"
+
+sudo dokku plugin:install https://github.com/dokku/dokku-postgres.git postgres
+dokku postgres:create $DB_NAME
+dokku postgres:link $DB_NAME $APP_NAME
+
+echo ">>> Install PGRoonga extension"
+sudo apt update
+sudo apt install -y -V apt-transport-https
+sudo touch /etc/apt/sources.list.d/groonga.list
+sudo echo 'deb [signed-by=/usr/share/keyrings/groonga-archive-keyring.gpg] https://packages.groonga.org/debian/ stretch main' >> /etc/apt/sources.list.d/groonga.list
+sudo echo 'deb-src [signed-by=/usr/share/keyrings/groonga-archive-keyring.gpg] https://packages.groonga.org/debian/ stretch main' >> /etc/apt/sources.list.d/groonga.list
+sudo wget -O /usr/share/keyrings/groonga-archive-keyring.gpg https://packages.groonga.org/debian/groonga-archive-keyring.gpg
+sudo apt update
+sudo apt install -y -V postgresql-9.6-pgroonga
+
+echo ">>> Migrate data"
+dokku run $APP_NAME mix ecto.migrate
+
+
+echo ">>> Custom Domain"
+dokku domains:add $APP_NAME $DOMAIN
+
+echo ">>> SSL"
+$ sudo dokku plugin:install https://github.com/dokku/dokku-letsencrypt.git
+$ dokku config:set --no-restart $APP_NAME DOKKU_LETSENCRYPT_EMAIL=$EMAIL
+$ dokku letsencrypt $APP_NAME
+$ dokku letsencrypt:auto-renew river_place
