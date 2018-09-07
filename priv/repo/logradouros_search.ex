@@ -29,7 +29,7 @@ defmodule StatesApi.Repo.LogradouroSearch do
         records = reduce_batch(batch, estados, localidades, bairros)
         Repo.insert_all(LogradouroSearch, records)
         Logger.info ">>> Inseridos ate agora: #{length(batch) * (i+1)} logradouros"
-        Logger.info ">>> Faltam aprox.: #{1030000 / length(batch) * (i+1)} logradouros"
+        Logger.info ">>> Faltam aprox.: #{1_030_000 - length(batch) * (i+1)} logradouros"
       end)
     end, timeout: :infinity)
   end

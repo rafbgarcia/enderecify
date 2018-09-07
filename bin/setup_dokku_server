@@ -5,16 +5,15 @@ DB_NAME=${APP_NAME}_prod
 DOMAIN=enderecify.com
 EMAIL=rafbgarcia@gmail.com
 
+PROJECT_ID=enderecify-215617
+ZONE=southamerica-east1-b
+INSTANCE_NAME=enderecify-dokku
+
 echo ">>> Install dokku"
 
-gcloud compute --project "enderecify-215617" ssh --zone "southamerica-east1-b" "enderecify-dokku" \
-  --command "wget https://raw.githubusercontent.com/dokku/dokku/v0.12.12/bootstrap.sh"
-
-gcloud compute --project "enderecify-215617" ssh --zone "southamerica-east1-b" "enderecify-dokku" \
-  --command "sudo DOKKU_TAG=v0.12.12 bash bootstrap.sh"
-
-gcloud compute --project "enderecify-215617" ssh --zone "southamerica-east1-b" "enderecify-dokku" \
-  --command "sudo sshcommand acl-add dokku ssh-key-for-dokku-push `cat ~/.ssh/id_rsa.pub`"
+gcloud compute --project $PROJECT_ID ssh --zone $ZONE $INSTANCE_NAME \ --command "wget https://raw.githubusercontent.com/dokku/dokku/v0.12.12/bootstrap.sh"
+gcloud compute --project $PROJECT_ID ssh --zone $ZONE $INSTANCE_NAME \ --command "sudo DOKKU_TAG=v0.12.12 bash bootstrap.sh"
+gcloud compute --project $PROJECT_ID ssh --zone $ZONE $INSTANCE_NAME \ --command "sudo sshcommand acl-add dokku ssh-key-for-dokku-push `cat ~/.ssh/id_rsa.pub`"
 
 
 echo ">>> Create app"
@@ -50,7 +49,7 @@ echo ">>> Custom Domain"
 dokku domains:add $APP_NAME $DOMAIN
 
 echo ">>> SSL"
-$ sudo dokku plugin:install https://github.com/dokku/dokku-letsencrypt.git
-$ dokku config:set --no-restart $APP_NAME DOKKU_LETSENCRYPT_EMAIL=$EMAIL
-$ dokku letsencrypt $APP_NAME
-$ dokku letsencrypt:auto-renew river_place
+sudo dokku plugin:install https://github.com/dokku/dokku-letsencrypt.git
+dokku config:set --no-restart $APP_NAME DOKKU_LETSENCRYPT_EMAIL=$EMAIL
+dokku letsencrypt $APP_NAME
+dokku letsencrypt:auto-renew $APP_NAME

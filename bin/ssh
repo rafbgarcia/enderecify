@@ -1,0 +1,1 @@
+gcloud compute --project "enderecify-215617" ssh --zone "southamerica-east1-b" "enderecify-dokku"
