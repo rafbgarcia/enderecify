@@ -20,7 +20,7 @@ $('.js_send_request').click(function () {
     let contentLength = JSON.stringify(data).length
     contentLength = contentLength < 1024 ? `${contentLength} bytes` : `${Math.round(contentLength / 1024 * 10) / 10} KB`
     const responseEl = $('#response')
-    responseEl.removeClass('d-none').html(`Resposta: <code>${contentLength}</code> em <code>${time}ms</code>`)
+    responseEl.removeClass('d-none').html(`Resposta: enviados <code>${contentLength}</code> em <code>${time}ms</code>`)
 
     const editor = ace.edit($('#result')[0])
     editor.session.setMode("ace/mode/json")
