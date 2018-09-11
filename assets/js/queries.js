@@ -16,9 +16,6 @@ const queries = {
   cidades: localidades(siglaEstado: "MG") {
     id
     nome
-    bairros {
-      nome
-    }
   }
 }`,
   bairros: `{
