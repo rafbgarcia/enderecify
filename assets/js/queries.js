@@ -13,9 +13,12 @@ const queries = {
   }
 }`,
   localidades: `{
-  cidades: localidades(siglaEstado: "SP") {
+  cidades: localidades(siglaEstado: "MG") {
     id
     nome
+    bairros {
+      nome
+    }
   }
 }`,
   bairros: `{
