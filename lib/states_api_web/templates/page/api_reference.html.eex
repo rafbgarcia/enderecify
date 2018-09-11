@@ -108,8 +108,12 @@ localidades(siglaRegiao: String)</code></pre>
 localidades(siglaEstado: String!)</code></pre>
       <h5>Exemplos</h5>
       <pre class="highlight graphqlschema"><code>{
-  localidades(siglaEstado: "SE") {
-    id nome
+  localidades(siglaEstado: "MG") {
+    id
+    nome
+    bairros {
+      nome
+    }
   }
 }</code></pre>
 
@@ -181,6 +185,7 @@ logradouros(cep: String, busca: String, localidadeId: String)</code></pre>
   id: ID
   nome: String
   abbr: String
+  bairros: [Bairro]
 }</code></pre>
       </div>
 
